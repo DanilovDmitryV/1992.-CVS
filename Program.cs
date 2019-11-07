@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _1992.CVS
 {
@@ -7,7 +8,17 @@ namespace _1992.CVS
     {
         private static void Main()
         {
-
+            var n = (Console.ReadLine() ?? "")
+                .Split().Select(int.Parse).First();
+            var clones = new CloneVersionSystem();
+            for (int i = 0; i < n; i++)
+            {
+                var query = Console.ReadLine();
+                if (query == null) continue;
+                var result = clones.Execute(query);
+                if (result != null)
+                    Console.WriteLine(result);
+            }
         }
 
         public class CloneVersionSystem
@@ -51,8 +62,8 @@ namespace _1992.CVS
 
             public class Clone
             {
-                private LinkedStack learned;
-                private LinkedStack rollback;
+                private LinkedStack learned; //Стек усвоенных программ
+                private LinkedStack rollback; //Стек откатов
 
                 public Clone()
                 {
@@ -92,11 +103,13 @@ namespace _1992.CVS
                         return learned.Peek().ToString();
                 }
 
+                //Копирование верхнего элемента стека усвоенных программ
                 public StackItem CopyHeadL()
                 {
                     return learned.CopyHead();
                 }
 
+                //Копирование верхнего элемента стека откатов
                 public StackItem CopyHeadR()
                 {
                     return rollback.CopyHead();
@@ -153,5 +166,4 @@ namespace _1992.CVS
             }
         }
     }
-
 }
